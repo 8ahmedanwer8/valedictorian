@@ -2,6 +2,9 @@ import React from "react";
 import { Container, Text, Box, Spacer, VStack, Flex } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import Login from "../components/Login";
+import SearchBar from "../components/SearchBar";
+import data from "./data.json";
+
 import "../App.css";
 
 const Homepage = () => {
@@ -35,6 +38,10 @@ const Homepage = () => {
             >
               Read about university programs from the students
             </Text>
+            <SearchBar
+              placeholder="Search programs from institutions across North America"
+              data={data}
+            />
           </Box>
         </VStack>
         <Login></Login>
