@@ -7,11 +7,13 @@ import {
   Button,
   MenuItem,
   Box,
+  forwardRef,
   InputRightAddon,
   Input,
   InputGroup,
   MenuList,
   Menu,
+  VStack,
 } from "@chakra-ui/react";
 function SearchBar({ placeholder, data }) {
   const [filteredData, setFilteredData] = useState([]);
@@ -36,8 +38,12 @@ function SearchBar({ placeholder, data }) {
     setWordEntered("");
   };
 
+  // const Card = forwardRef<BoxProps, 'div'>((props, ref) => (
+  // <Box px='4' py='5' rounded='sm' shadow='lg' ref={ref} {...props} />
+  // ))
+
   return (
-    <Box alignItems="center" py="10" px="20">
+    <VStack width="100%" height="100%" py="10" px="10">
       <InputGroup>
         <Input
           fontFamily="Inter"
@@ -46,8 +52,8 @@ function SearchBar({ placeholder, data }) {
           borderRadius="100px"
           size="md"
           w="full"
-          placeholder="Search programs from institutions across Ontario"
-          _placeholder={{ color: "black", opacity: "100%" }}
+          placeholder={placeholder}
+          _placeholder={{ color: "black", opacity: "75%" }}
         />
         <InputRightAddon
           p="0"
@@ -56,20 +62,14 @@ function SearchBar({ placeholder, data }) {
           as={Button}
         ></InputRightAddon>
       </InputGroup>
-      <Menu>
-        <MenuButton as={Button}>Actions</MenuButton>
-        <MenuList>
+      <Menu isLazy>
+        <MenuList height="100px" overflow="scroll">
           {data.map((value, key) => {
-            return (
-              // <a href={value.link}>
-              //   <p>{value.title}</p>
-              // </a>
-              <MenuItem>{value.title}</MenuItem>
-            );
+            return <MenuItem>{value.title}</MenuItem>;
           })}
         </MenuList>
       </Menu>
-    </Box>
+    </VStack>
   );
 }
 

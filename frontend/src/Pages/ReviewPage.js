@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Container, Text, Box, Spacer, VStack, Flex } from "@chakra-ui/react";
+import Navbar from "../components/Navbar";
+import InfoPanel from "../components/ReviewPage/InfoPanel";
+import RatingsPanel from "../components/ReviewPage/RatingsPanel";
+import ReviewsPanel from "../components/ReviewPage/ReviewsPanel";
+
 import axios from "axios";
 
 const ReviewPage = () => {
@@ -13,7 +19,16 @@ const ReviewPage = () => {
     fetchStats();
   }, []);
 
-  return <div key="key">{chats.uni}</div>;
+  return (
+    <Container backgroundColor="#ffa987" p="0" h="100vh" maxW="100%">
+      <Navbar type={1}></Navbar>
+      <Flex m="0" h="60vh">
+        <InfoPanel></InfoPanel>
+        <RatingsPanel></RatingsPanel>
+      </Flex>
+      <ReviewsPanel></ReviewsPanel>
+    </Container>
+  );
 };
 
 export default ReviewPage;

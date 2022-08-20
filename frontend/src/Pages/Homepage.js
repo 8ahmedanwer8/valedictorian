@@ -10,7 +10,7 @@ import "../App.css";
 const Homepage = () => {
   return (
     <Container backgroundColor="#ffa987" p="0" h="100vh" maxW="100%">
-      <Navbar></Navbar>
+      <Navbar type="0"></Navbar>
       <Flex h="100vh">
         <VStack
           px="40px"
