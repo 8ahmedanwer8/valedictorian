@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Text, Box, Spacer, VStack, Flex } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import Login from "../components/Login";
+import TestNav from "../components/TestNav";
+
 import SearchBar from "../components/SearchBar";
 import data from "./data.json";
 
@@ -9,7 +11,7 @@ import "../App.css";
 
 const Homepage = () => {
   return (
-    <Container backgroundColor="#ffa987" p="0" h="100vh" maxW="100%">
+    <Container backgroundColor="#ffa987" p="0" h="fit-content" maxW="100%">
       <Navbar type="0"></Navbar>
       <Flex h="100vh">
         <VStack
@@ -46,6 +48,7 @@ const Homepage = () => {
         </VStack>
         <Login></Login>
       </Flex>
+      <TestNav></TestNav>
     </Container>
   );
 };

@@ -11,17 +11,9 @@ import { Button } from "@chakra-ui/button";
 import "../App.css";
 import { FcGoogle } from "react-icons/fc";
 
-function Login() {
+function Signup() {
   return (
-    <Box
-      alignItems="flex-start"
-      width="full"
-      height="fit-content"
-      spacing="10"
-      px="28"
-      py="20"
-      bgColor="#FFA987"
-    >
+    <Box width="25%" height="fit-content" spacing="10" bgColor="#FFA987">
       <VStack
         borderRadius="50px"
         width="100%"
@@ -37,9 +29,27 @@ function Login() {
           color="#FFF7F4"
           fontWeight="600"
         >
-          Log in
+          Sign up
         </Heading>
-        <VStack spacing="2">
+        <VStack spacing="4">
+          <FormControl>
+            <FormLabel
+              fontFamily="Inter"
+              color="#FFF7F4"
+              fontWeight="400"
+              fontSize="16px"
+            >
+              Name
+            </FormLabel>
+            <Input
+              fontFamily="Inter"
+              fontWeight="400"
+              fontSize="20px"
+              bgColor="#FFF7F4"
+              placeholder="Name"
+              _placeholder={{ color: "black", opacity: "50%" }}
+            ></Input>
+          </FormControl>
           <FormControl>
             <FormLabel
               fontFamily="Inter"
@@ -76,6 +86,24 @@ function Login() {
               _placeholder={{ color: "black", opacity: "50%" }}
             ></Input>
           </FormControl>
+          <FormControl>
+            <FormLabel
+              fontFamily="Inter"
+              color="#FFF7F4"
+              fontWeight="400"
+              fontSize="16px"
+            >
+              Confirm Password
+            </FormLabel>
+            <Input
+              fontFamily="Inter"
+              fontWeight="400"
+              fontSize="20px"
+              bgColor="#FFF7F4"
+              placeholder="Confirm Password"
+              _placeholder={{ color: "black", opacity: "50%" }}
+            ></Input>
+          </FormControl>
           <Box width="full">
             <Text
               fontFamily="Inter"
@@ -88,54 +116,8 @@ function Login() {
               Forget Password
             </Text>
           </Box>
-
-          <Button
-            width="60%"
-            px="10"
-            borderRadius="15px"
-            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-            height="60px"
-            fontSize="20px"
-            fontFamily="Spline Sans"
-            fontWeight="600"
-            color="#FFF7F4"
-            bgColor="#1E1E24"
-            _hover={{ bg: "#000" }}
-            _active={{
-              bg: "#000",
-            }}
-          >
-            Log in
-          </Button>
-          <Button
-            leftIcon={<FcGoogle />}
-            width="90%"
-            px="30px"
-            borderRadius="50px"
-            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
-            height="60px"
-            fontSize="20px"
-            fontFamily="Spline Sans"
-            fontWeight="600"
-            color="#FFF7F4"
-            bgColor="#1E1E24"
-            _hover={{ bg: "#000" }}
-            _active={{
-              bg: "#000",
-            }}
-          >
-            Continue with Google
-          </Button>
         </VStack>
-        <Text
-          fontFamily="Inter"
-          fontWeight="400"
-          fontSize="20px"
-          color="#FFF7F4"
-          opacity="50%"
-        >
-          Don't have an account?
-        </Text>
+
         <Button
           width="90%"
           px="10"
@@ -159,4 +141,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

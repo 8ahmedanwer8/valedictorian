@@ -17,6 +17,7 @@ function Navbar({ type }) {
           left="0"
           src={logo}
         ></Image>
+
         <Text
           fontFamily="Spline Sans"
           textShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
