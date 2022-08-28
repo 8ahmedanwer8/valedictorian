@@ -3,7 +3,11 @@ const mongoose = require("mongoose");
 const programModel = mongoose.Schema(
   {
     uni: { type: mongoose.Schema.Types.ObjectId, ref: "Uni" },
-    description: { type: String, trim: true },
+    description: {
+      type: String,
+      trim: true,
+      default: "No description available",
+    },
     url: { type: String, trim: true },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     meta: {
