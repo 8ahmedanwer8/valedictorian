@@ -4,14 +4,29 @@ import {
   Box,
   FormControl,
   Input,
+  InputRightElement,
   FormLabel,
   VStack,
+  InputGroup,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
+import { useState } from "react";
 import "../App.css";
 import { FcGoogle } from "react-icons/fc";
 
 function Signup() {
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(!show);
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+
+  const submitHandler = () => {
+    console.log("submitting with these credentials");
+    console.log(name, email, password, confirmPassword);
+  };
   return (
     <Box width="25%" height="fit-content" spacing="10" bgColor="#FFA987">
       <VStack
@@ -32,7 +47,7 @@ function Signup() {
           Sign up
         </Heading>
         <VStack spacing="4">
-          <FormControl>
+          <FormControl id="name">
             <FormLabel
               fontFamily="Inter"
               color="#FFF7F4"
@@ -48,6 +63,7 @@ function Signup() {
               bgColor="#FFF7F4"
               placeholder="Name"
               _placeholder={{ color: "black", opacity: "50%" }}
+              onChange={(e) => setName(e.target.value)}
             ></Input>
           </FormControl>
           <FormControl>
@@ -65,6 +81,7 @@ function Signup() {
               fontSize="20px"
               bgColor="#FFF7F4"
               placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
               _placeholder={{ color: "black", opacity: "50%" }}
             ></Input>
           </FormControl>
@@ -77,14 +94,23 @@ function Signup() {
             >
               Password
             </FormLabel>
-            <Input
-              fontFamily="Inter"
-              fontWeight="400"
-              fontSize="20px"
-              bgColor="#FFF7F4"
-              placeholder="Password"
-              _placeholder={{ color: "black", opacity: "50%" }}
-            ></Input>
+            <InputGroup>
+              <Input
+                type={show ? "text" : "password"}
+                fontFamily="Inter"
+                fontWeight="400"
+                fontSize="20px"
+                bgColor="#FFF7F4"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                _placeholder={{ color: "black", opacity: "50%" }}
+              ></Input>
+              <InputRightElement>
+                <Button p="4" mr="2" size="sm" onClick={handleShow}>
+                  {show ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <FormControl>
             <FormLabel
@@ -95,14 +121,23 @@ function Signup() {
             >
               Confirm Password
             </FormLabel>
-            <Input
-              fontFamily="Inter"
-              fontWeight="400"
-              fontSize="20px"
-              bgColor="#FFF7F4"
-              placeholder="Confirm Password"
-              _placeholder={{ color: "black", opacity: "50%" }}
-            ></Input>
+            <InputGroup>
+              <Input
+                type={show ? "text" : "password"}
+                fontFamily="Inter"
+                fontWeight="400"
+                fontSize="20px"
+                bgColor="#FFF7F4"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                _placeholder={{ color: "black", opacity: "50%" }}
+              ></Input>
+              <InputRightElement>
+                <Button p="4" mr="2" size="sm" onClick={handleShow}>
+                  {show ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
           <Box width="full">
             <Text
@@ -131,10 +166,11 @@ function Signup() {
           bgColor="#E54B4B"
           _hover={{ bg: "#cc3737" }}
           _active={{
-            bg: "#000",
+            bg: "#ba2222",
           }}
+          onClick={submitHandler}
         >
-          Create an account
+          Create account
         </Button>
       </VStack>
     </Box>
