@@ -12,8 +12,7 @@ const commentModel = mongoose.Schema(
       acadEnv: Number,
       funEnv: Number,
       finAid: Number,
-      thumbsUp: Number,
-      thumbsDown: Number,
+      thumbsUpOrDown: Boolean,
     },
   },
   {
