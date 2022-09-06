@@ -4,8 +4,8 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const https = require("https");
 const connectDB = require("./config/db");
-
 const userRoutes = require("./routes/userRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 dotenv.config();
 
 // https
@@ -56,3 +56,6 @@ const server = app.listen(
 );
 
 app.use("/api/user", userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
