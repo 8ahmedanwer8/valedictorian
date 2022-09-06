@@ -15,13 +15,37 @@ import "../App.css";
 import { FcGoogle } from "react-icons/fc";
 
 function Signup() {
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(!show);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
+
+  const [showConfPassword, setShowConfPassword] = useState(false);
+  const [showConfPasswordBtn, setShowConfPasswordBtn] = useState("hidden");
+
+  const btnShowPassword = () => setShowPassword(!showPassword);
+  const btnShowConfPassword = () => setShowConfPassword(!showConfPassword);
 
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+    if (password && password.length > 1) {
+      setShowPasswordBtn("visible");
+    } else {
+      setShowPasswordBtn("hidden");
+    }
+  };
+
+  const handleConfPassword = (e) => {
+    setConfirmPassword(e.target.value);
+    if (confirmPassword && confirmPassword.length > 1) {
+      setShowConfPasswordBtn("visible");
+    } else {
+      setShowConfPasswordBtn("hidden");
+    }
+  };
 
   const submitHandler = () => {
     console.log("submitting with these credentials");
@@ -81,7 +105,7 @@ function Signup() {
               fontSize="20px"
               bgColor="#FFF7F4"
               placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e)}
               _placeholder={{ color: "black", opacity: "50%" }}
             ></Input>
           </FormControl>
@@ -96,18 +120,24 @@ function Signup() {
             </FormLabel>
             <InputGroup>
               <Input
-                type={show ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 fontFamily="Inter"
                 fontWeight="400"
                 fontSize="20px"
                 bgColor="#FFF7F4"
                 placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handlePassword(e)}
                 _placeholder={{ color: "black", opacity: "50%" }}
               ></Input>
               <InputRightElement>
-                <Button p="4" mr="2" size="sm" onClick={handleShow}>
-                  {show ? "Hide" : "Show"}
+                <Button
+                  visibility={showPasswordBtn}
+                  p="4"
+                  mr="2"
+                  size="sm"
+                  onClick={btnShowPassword}
+                >
+                  {showPassword ? "Hide" : "Show"}
                 </Button>
               </InputRightElement>
             </InputGroup>
@@ -123,18 +153,24 @@ function Signup() {
             </FormLabel>
             <InputGroup>
               <Input
-                type={show ? "text" : "password"}
+                type={showConfPassword ? "text" : "password"}
                 fontFamily="Inter"
                 fontWeight="400"
                 fontSize="20px"
                 bgColor="#FFF7F4"
                 placeholder="Confirm Password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => handleConfPassword(e)}
                 _placeholder={{ color: "black", opacity: "50%" }}
               ></Input>
               <InputRightElement>
-                <Button p="4" mr="2" size="sm" onClick={handleShow}>
-                  {show ? "Hide" : "Show"}
+                <Button
+                  visibility={showConfPasswordBtn}
+                  p="4"
+                  mr="2"
+                  size="sm"
+                  onClick={btnShowConfPassword}
+                >
+                  {showConfPassword ? "Hide" : "Show"}
                 </Button>
               </InputRightElement>
             </InputGroup>

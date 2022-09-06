@@ -1,5 +1,5 @@
-import logo from "../Pages/logo.svg";
-import topWave from "../Pages/top2.svg";
+import logo from "../Pages/art/logo.svg";
+import topWave from "../Pages/art/top2.svg";
 import { Box, Flex, Text, Image, Spacer, Center } from "@chakra-ui/react";
 import "../App.css";
 import SearchBar from "./SearchBar.js";
