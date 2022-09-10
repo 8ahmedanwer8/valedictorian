@@ -8,12 +8,13 @@ import {
   FormLabel,
   VStack,
   InputGroup,
+  useToast,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
 import { useState } from "react";
 import "../App.css";
-import { FcGoogle } from "react-icons/fc";
-
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
@@ -28,7 +29,10 @@ function Signup() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
+  const [loading, setLoading] = useState(false);
 
+  const toast = useToast();
+  const history = useHistory();
   const handlePassword = (e) => {
     setPassword(e.target.value);
     if (password && password.length > 1) {
@@ -47,10 +51,63 @@ function Signup() {
     }
   };
 
-  const submitHandler = () => {
-    console.log("submitting with these credentials");
-    console.log(name, email, password, confirmPassword);
+  const submitHandler = async () => {
+    setLoading(true);
+    if (!name || !password || !confirmPassword || !email) {
+      toast({
+        title: "Please enter all of the fields",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast({
+        title: "Passwords does not match",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "/api/user",
+        { name, email, password },
+        config
+      );
+      toast({
+        title: "Registration successful",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom",
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setLoading(false);
+      history.push("/chats");
+    } catch (error) {
+      toast({
+        title: "Error Occured",
+        description: JSON.stringify(error),
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
   };
+
   return (
     <Box width="25%" height="fit-content" spacing="10" bgColor="#FFA987">
       <VStack
