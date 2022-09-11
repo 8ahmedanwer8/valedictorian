@@ -20,13 +20,15 @@ const ReviewPage = () => {
   }, []);
 
   return (
-    <Container backgroundColor="#ffa987" p="0" h="100vh" maxW="100%">
+    <Container backgroundColor="#ffa987" p="0" h="full" maxW="100%">
       <Navbar type={1}></Navbar>
-      <Flex m="0" h="60vh">
+      <Flex m="0">
         <InfoPanel></InfoPanel>
         <RatingsPanel></RatingsPanel>
       </Flex>
-      <ReviewsPanel></ReviewsPanel>
+      <Box px="8">
+        <ReviewsPanel></ReviewsPanel>
+      </Box>
     </Container>
   );
 };

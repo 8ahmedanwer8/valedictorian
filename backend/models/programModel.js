@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const programModel = mongoose.Schema(
   {
+    name: { type: String },
     uni: { type: mongoose.Schema.Types.ObjectId, ref: "Uni" },
     description: {
       type: String,
