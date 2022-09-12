@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const generateToken = require("../config/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
+  console.log("HERE");
   const { name, email, password } = req.body;
   User.findOne({ email });
 

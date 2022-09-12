@@ -34,7 +34,7 @@ function Signup() {
   const toast = useToast();
   const history = useHistory();
   const handlePassword = (e) => {
-    setPassword(e.target.value);
+    setPassword(e);
     if (password && password.length > 1) {
       setShowPasswordBtn("visible");
     } else {
@@ -43,7 +43,7 @@ function Signup() {
   };
 
   const handleConfPassword = (e) => {
-    setConfirmPassword(e.target.value);
+    setConfirmPassword(e);
     if (confirmPassword && confirmPassword.length > 1) {
       setShowConfPasswordBtn("visible");
     } else {
@@ -52,12 +52,13 @@ function Signup() {
   };
 
   const submitHandler = async () => {
+    console.log(name, email, password, confirmPassword);
     setLoading(true);
-    if (!name || !password || !confirmPassword || !email) {
+    if (!name || !email || !password || !confirmPassword) {
       toast({
-        title: "Please enter all of the fields",
+        title: "Please Fill all the Fields",
         status: "warning",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: "bottom",
       });
@@ -66,41 +67,47 @@ function Signup() {
     }
     if (password !== confirmPassword) {
       toast({
-        title: "Passwords does not match",
+        title: "Passwords Do Not Match",
         status: "warning",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: "bottom",
       });
       return;
     }
+    console.log(name, email, password);
     try {
       const config = {
         headers: {
           "Content-type": "application/json",
         },
       };
-      const { data } = await axios.post(
+      const data = await axios.post(
         "/api/user",
-        { name, email, password },
+        {
+          name,
+          email,
+          password,
+        },
         config
       );
       toast({
-        title: "Registration successful",
+        title: "Registration Successful",
         status: "success",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userInfo", data);
       setLoading(false);
-      history.push("/chats");
+      history.push("/");
     } catch (error) {
+      console.log(error);
       toast({
-        title: "Error Occured",
-        description: JSON.stringify(error),
+        title: "Error Occured!",
+        description: error.response.data.message,
         status: "error",
-        duration: 4000,
+        duration: 5000,
         isClosable: true,
         position: "bottom",
       });
@@ -162,7 +169,7 @@ function Signup() {
               fontSize="20px"
               bgColor="#FFF7F4"
               placeholder="Email"
-              onChange={(e) => setEmail(e)}
+              onChange={(e) => setEmail(e.target.value)}
               _placeholder={{ color: "black", opacity: "50%" }}
             ></Input>
           </FormControl>
@@ -183,7 +190,7 @@ function Signup() {
                 fontSize="20px"
                 bgColor="#FFF7F4"
                 placeholder="Password"
-                onChange={(e) => handlePassword(e)}
+                onChange={(e) => handlePassword(e.target.value)}
                 _placeholder={{ color: "black", opacity: "50%" }}
               ></Input>
               <InputRightElement>
@@ -210,13 +217,14 @@ function Signup() {
             </FormLabel>
             <InputGroup>
               <Input
+                mb="4"
                 type={showConfPassword ? "text" : "password"}
                 fontFamily="Inter"
                 fontWeight="400"
                 fontSize="20px"
                 bgColor="#FFF7F4"
                 placeholder="Confirm Password"
-                onChange={(e) => handleConfPassword(e)}
+                onChange={(e) => handleConfPassword(e.target.value)}
                 _placeholder={{ color: "black", opacity: "50%" }}
               ></Input>
               <InputRightElement>
@@ -232,18 +240,6 @@ function Signup() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-          <Box width="full">
-            <Text
-              fontFamily="Inter"
-              fontWeight="400"
-              fontSize="20px"
-              color="#FFF7F4"
-              opacity="50%"
-              textAlign="right"
-            >
-              Forget Password
-            </Text>
-          </Box>
         </VStack>
 
         <Button
@@ -261,6 +257,7 @@ function Signup() {
           _active={{
             bg: "#ba2222",
           }}
+          isLoading={loading}
           onClick={submitHandler}
         >
           Create account

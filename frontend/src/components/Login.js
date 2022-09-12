@@ -8,11 +8,15 @@ import {
   VStack,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import { Button } from "@chakra-ui/button";
 import "../App.css";
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 
 function Login() {
   const [show, setShow] = useState(false);
@@ -20,9 +24,73 @@ function Login() {
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
+  const btnShowPassword = () => setShowPassword(!showPassword);
 
-  const submitHandler = () => {
-    console.log("logging user in");
+  const handlePassword = (e) => {
+    setPassword(e);
+    if (password && password.length > 1) {
+      setShowPasswordBtn("visible");
+    } else {
+      setShowPasswordBtn("hidden");
+    }
+  };
+  const submitHandler = async () => {
+    console.log(email, password);
+    setLoading(true);
+    if (!email || !password) {
+      toast({
+        title: "Please Fill all the Fields",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+      return;
+    }
+
+    console.log(email, password);
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const data = await axios.post(
+        "/api/user/login",
+        {
+          email,
+          password,
+        },
+        config
+      );
+      toast({
+        title: "Registration Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      localStorage.setItem("userInfo", data);
+      setLoading(false);
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,12 +160,18 @@ function Login() {
                 bgColor="#FFF7F4"
                 placeholder="Password"
                 onChange={(e) => {
-                  setPassword(e.target.value);
+                  handlePassword(e.target.value);
                 }}
                 _placeholder={{ color: "black", opacity: "50%" }}
               ></Input>
               <InputRightElement>
-                <Button p="4" mr="2" size="sm" onClick={handleShow}>
+                <Button
+                  visibility={showPasswordBtn}
+                  p="4"
+                  mr="2"
+                  size="sm"
+                  onClick={btnShowPassword}
+                >
                   {show ? "Hide" : "Show"}
                 </Button>
               </InputRightElement>
@@ -128,6 +202,7 @@ function Login() {
             color="#FFF7F4"
             bgColor="#1E1E24"
             onClick={submitHandler}
+            isLoading={loading}
             _hover={{ bg: "#000" }}
             _active={{
               bg: "#000",
