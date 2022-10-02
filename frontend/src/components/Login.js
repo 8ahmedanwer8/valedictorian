@@ -19,9 +19,6 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 
 function Login() {
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(!show);
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
@@ -29,7 +26,7 @@ function Login() {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
-  const btnShowPassword = () => setShowPassword(!showPassword);
+  const handleShowPasswordBtn = () => setShowPassword(!showPassword);
 
   const handlePassword = (e) => {
     setPassword(e);
@@ -153,7 +150,7 @@ function Login() {
             </FormLabel>
             <InputGroup>
               <Input
-                type={show ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 fontFamily="Inter"
                 fontWeight="400"
                 fontSize="20px"
@@ -170,9 +167,9 @@ function Login() {
                   p="4"
                   mr="2"
                   size="sm"
-                  onClick={btnShowPassword}
+                  onClick={handleShowPasswordBtn}
                 >
-                  {show ? "Hide" : "Show"}
+                  {showPassword ? "Hide" : "Show"}
                 </Button>
               </InputRightElement>
             </InputGroup>
