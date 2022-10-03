@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, Text, Image, Spacer, Center } from "@chakra-ui/react";
-import bottomWave from "../Pages/art/bottom.svg";
+import bottomWave from "../../Pages/art/bottom.svg";
 
 const TestNav = () => {
   return (

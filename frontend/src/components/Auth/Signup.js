@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
 import { useState } from "react";
-import "../App.css";
+import "../../App.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 function Signup() {

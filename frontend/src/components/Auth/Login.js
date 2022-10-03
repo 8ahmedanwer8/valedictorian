@@ -11,19 +11,19 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 
 import { Button } from "@chakra-ui/button";
-import "../App.css";
+import "../../App.css";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 function Login() {
+  const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
   const handleShowPasswordBtn = () => setShowPassword(!showPassword);
@@ -237,6 +237,7 @@ function Login() {
           Don't have an account?
         </Text>
         <Button
+          as="button"
           width="90%"
           px="10"
           borderRadius="15px"
@@ -251,6 +252,7 @@ function Login() {
           _active={{
             bg: "#ba2222",
           }}
+          onClick={() => history.push("/create-account")}
         >
           Create an account
         </Button>

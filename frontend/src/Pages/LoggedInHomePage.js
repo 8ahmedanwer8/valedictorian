@@ -10,11 +10,11 @@ import data from "./data.json";
 import "../App.css";
 import { useHistory } from "react-router-dom";
 
-const HomePage = () => {
+const LoggedInHomePage = () => {
   const history = useHistory();
   return (
     <Container backgroundColor="#ffa987" p="0" h="fit-content" maxW="100%">
-      <Navbar type="0"></Navbar>
+      <Navbar type="0" username="Ahmed"></Navbar>
       <Flex h="100vh">
         <VStack
           px="40px"
@@ -48,11 +48,10 @@ const HomePage = () => {
             />
           </Box>
         </VStack>
-        <Login></Login>
       </Flex>
       <TestNav></TestNav>
     </Container>
   );
 };
 
-export default HomePage;
+export default LoggedInHomePage;

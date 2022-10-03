@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Text, Box, Spacer, VStack, Flex } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/NavBars/Navbar";
 import InfoPanel from "../components/ReviewPage/InfoPanel";
 import RatingsPanel from "../components/ReviewPage/RatingsPanel";
 import ReviewsPanel from "../components/ReviewPage/ReviewsPanel";

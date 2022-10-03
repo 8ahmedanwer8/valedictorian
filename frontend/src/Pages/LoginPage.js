@@ -12,19 +12,21 @@ import Navbar from "../components/NavBars/Navbar";
 // import SearchBar from "../components/SearchBar";
 // import data from "./data.json";
 
-import Signup from "../components/Auth/Signup";
+import Login from "../components/Auth/Login";
 import TestNav from "../components/NavBars/TestNav";
 
-const HomePage = () => {
+const LoginPage = () => {
   return (
     <Container backgroundColor="#ffa987" p="0" h="fit-content" maxW="100%">
       <Navbar type="0"></Navbar>
       <Center>
-        <Signup></Signup>
+        <Box p="0" w="40%">
+          <Login></Login>
+        </Box>
       </Center>
       <TestNav></TestNav>
     </Container>
   );
 };
 
-export default HomePage;
+export default LoginPage;
