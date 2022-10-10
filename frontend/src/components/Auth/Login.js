@@ -17,7 +17,7 @@ import "../../App.css";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
+import { useGoogleLogin } from "@react-oauth/google";
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState();
@@ -89,6 +89,49 @@ function Login() {
       setLoading(false);
     }
   };
+  const GoogleSignIn = async (googleAccessToken) => {
+    console.log(googleAccessToken);
+    setLoading(true);
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const data = await axios.post(
+        "/api/user/google-signup",
+        {
+          googleAccessToken,
+        },
+        config
+      );
+      toast({
+        title: "Login Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      localStorage.setItem("userInfo", data);
+      setLoading(false);
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = useGoogleLogin({
+    onSuccess: (tokenResponse) => GoogleSignIn(tokenResponse),
+  });
 
   return (
     <Box
@@ -186,7 +229,6 @@ function Login() {
               Forget Password
             </Text>
           </Box>
-
           <Button
             width="60%"
             px="10"
@@ -207,7 +249,9 @@ function Login() {
           >
             Log in
           </Button>
+
           <Button
+            onClick={() => handleGoogleSignIn()}
             leftIcon={<FcGoogle />}
             width="90%"
             px="30px"
