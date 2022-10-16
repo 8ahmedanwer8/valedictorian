@@ -70,27 +70,22 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
       }
     );
     const name = response.data.given_name;
-    const lastName = response.data.family_name;
     const email = response.data.email;
-    const picture = response.data.picture;
 
     const existingUser = await User.findOne({ email });
-
+    //if they exist, then we return that user. if they don't exist then
+    //we create a user and return that.
     if (existingUser) {
-      res.status(400);
-      throw new Error("An account with this email already exists");
-    }
-    const user = await User.create({
-      name,
-      email,
-    });
-
-    if (user) {
       res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
+        _id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email,
+        token: generateToken(existingUser._id),
+      });
+    }
+    if (!existingUser) {
+      res.status(300).json({
+        message: "Enter your username",
       });
     }
   } catch (error) {
@@ -138,6 +133,51 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
 }); //i can authenticate!!!, idk the diff between this and signing up. also, the error handling has some promise problem!!!
 
 const googleSignInUser = asyncHandler(async (req, res) => {
+  const { googleAccessToken } = req.body;
+  try {
+    const response = await axios.get(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${googleAccessToken.access_token}`,
+        },
+      }
+    );
+    const email = response.data.email;
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.firstName,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    }
+    res.status(201).json({
+      _id: user._id,
+      name: user.firstName,
+      email: user.email,
+      token: generateToken(user._id),
+    });
+    const user = await User.create({
+      name,
+      email,
+    });
+
+    if (user) {
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    }
+  } catch (error) {
+    res.status(400);
+    throw new Error(error);
+  }
   if (req.body.googleAccessToken) {
     const { googleAccessToken } = req.body;
 

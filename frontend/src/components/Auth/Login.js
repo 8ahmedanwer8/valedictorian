@@ -10,7 +10,7 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 
 import { Button } from "@chakra-ui/button";
 import "../../App.css";
@@ -18,6 +18,8 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import GoogleUsernameModal from "../Miscellaneous/GoogleUsernameModal";
+import LoginContext from "../Context/LoginContext";
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState();
@@ -27,6 +29,9 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
   const handleShowPasswordBtn = () => setShowPassword(!showPassword);
+  const { enterGoogleUsername, setEnterGoogleUsername } =
+    useContext(LoginContext);
+  console.log(useContext(LoginContext));
 
   const handlePassword = (e) => {
     setPassword(e);
@@ -89,6 +94,10 @@ function Login() {
       setLoading(false);
     }
   };
+
+  function handleGoogleSignUp() {
+    setEnterGoogleUsername(true);
+  }
   const GoogleSignIn = async (googleAccessToken) => {
     console.log(googleAccessToken);
     setLoading(true);
@@ -105,6 +114,7 @@ function Login() {
         },
         config
       );
+      console.log(data);
       toast({
         title: "Login Successful",
         status: "success",
@@ -116,16 +126,20 @@ function Login() {
       setLoading(false);
       history.push("/");
     } catch (error) {
-      console.log(error);
-      toast({
-        title: "Error Occured!",
-        description: error.response.data.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      setLoading(false);
+      if (error.response.status == 300) {
+        handleGoogleSignUp();
+      } else {
+        console.log(error);
+        toast({
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+      }
     }
   };
 
@@ -301,6 +315,7 @@ function Login() {
           Create an account
         </Button>
       </VStack>
+      <GoogleUsernameModal></GoogleUsernameModal>
     </Box>
   );
 }
