@@ -92,7 +92,7 @@ function Signup() {
         config
       );
       toast({
-        title: "Registration Successful",
+        title: "Account created",
         status: "success",
         duration: 5000,
         isClosable: true,

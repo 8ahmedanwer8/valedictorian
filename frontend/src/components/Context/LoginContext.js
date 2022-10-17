@@ -9,9 +9,16 @@ const LoginContext = createContext();
 // other than that, i dont think this context will have many uses
 export function LoginProvider({ children }) {
   const [enterGoogleUsername, setEnterGoogleUsername] = useState(false);
+  const [newGoogleUserEmail, setNewGoogleUserEmail] = useState("");
+
   return (
     <LoginContext.Provider
-      value={{ enterGoogleUsername, setEnterGoogleUsername }}
+      value={{
+        enterGoogleUsername,
+        setEnterGoogleUsername,
+        newGoogleUserEmail,
+        setNewGoogleUserEmail,
+      }}
     >
       {children}
     </LoginContext.Provider>

@@ -59,6 +59,42 @@ const signInUser = asyncHandler(async (req, res) => {
 });
 
 const googleSignUpUser = asyncHandler(async (req, res) => {
+  const { username, newGoogleUserEmail } = req.body;
+  const name = username;
+  const email = newGoogleUserEmail;
+  console.log(34802);
+  try {
+    const existingUser = await User.findOne({ name });
+    if (existingUser) {
+      console.log("Invnaidlid username");
+      res.status(422).json({
+        message: "Username already taken",
+      });
+    } else {
+      const user = await User.create({
+        name,
+        email,
+      });
+      console.log(user);
+      if (user) {
+        res.status(201).json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token: generateToken(user._id),
+        });
+      }
+      if (!user) {
+        res.status(400);
+        throw new Error("Failed to create account");
+      }
+    }
+  } catch (error) {
+    res.status(400);
+    throw new Error(error);
+  }
+});
+const googleSignInUser = asyncHandler(async (req, res) => {
   const { googleAccessToken } = req.body;
   try {
     const response = await axios.get(
@@ -86,6 +122,7 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
     if (!existingUser) {
       res.status(300).json({
         message: "Enter your username",
+        email: email,
       });
     }
   } catch (error) {
@@ -132,89 +169,89 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
   //   });
 }); //i can authenticate!!!, idk the diff between this and signing up. also, the error handling has some promise problem!!!
 
-const googleSignInUser = asyncHandler(async (req, res) => {
-  const { googleAccessToken } = req.body;
-  try {
-    const response = await axios.get(
-      "https://www.googleapis.com/oauth2/v3/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${googleAccessToken.access_token}`,
-        },
-      }
-    );
-    const email = response.data.email;
+// const googleSignInUser = asyncHandler(async (req, res) => {
+//   const { googleAccessToken } = req.body;
+//   try {
+//     const response = await axios.get(
+//       "https://www.googleapis.com/oauth2/v3/userinfo",
+//       {
+//         headers: {
+//           Authorization: `Bearer ${googleAccessToken.access_token}`,
+//         },
+//       }
+//     );
+//     const email = response.data.email;
 
-    const existingUser = await User.findOne({ email });
+//     const existingUser = await User.findOne({ email });
 
-    if (existingUser) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.firstName,
-        email: user.email,
-        token: generateToken(user._id),
-      });
-    }
-    res.status(201).json({
-      _id: user._id,
-      name: user.firstName,
-      email: user.email,
-      token: generateToken(user._id),
-    });
-    const user = await User.create({
-      name,
-      email,
-    });
+//     if (existingUser) {
+//       res.status(201).json({
+//         _id: user._id,
+//         name: user.firstName,
+//         email: user.email,
+//         token: generateToken(user._id),
+//       });
+//     }
+//     res.status(201).json({
+//       _id: user._id,
+//       name: user.firstName,
+//       email: user.email,
+//       token: generateToken(user._id),
+//     });
+//     const user = await User.create({
+//       name,
+//       email,
+//     });
 
-    if (user) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      });
-    }
-  } catch (error) {
-    res.status(400);
-    throw new Error(error);
-  }
-  if (req.body.googleAccessToken) {
-    const { googleAccessToken } = req.body;
+//     if (user) {
+//       res.status(201).json({
+//         _id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         token: generateToken(user._id),
+//       });
+//     }
+//   } catch (error) {
+//     res.status(400);
+//     throw new Error(error);
+//   }
+//   if (req.body.googleAccessToken) {
+//     const { googleAccessToken } = req.body;
 
-    axios
-      .get("https://www.googleapis.com/oauth2/v3/userinfo", {
-        headers: {
-          Authorization: `Bearer ${googleAccessToken}`,
-        },
-      })
-      .then(async (response) => {
-        const firstName = response.data.given_name;
-        const lastName = response.data.family_name;
-        const email = response.data.email;
-        // const picture = response.data.picture;
+//     axios
+//       .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+//         headers: {
+//           Authorization: `Bearer ${googleAccessToken}`,
+//         },
+//       })
+//       .then(async (response) => {
+//         const firstName = response.data.given_name;
+//         const lastName = response.data.family_name;
+//         const email = response.data.email;
+//         // const picture = response.data.picture;
 
-        const existingUser = await User.findOne({ email });
+//         const existingUser = await User.findOne({ email });
 
-        if (!existingUser) {
-          res.status(400);
-          throw new Error("User does not exist");
-        }
+//         if (!existingUser) {
+//           res.status(400);
+//           throw new Error("User does not exist");
+//         }
 
-        const token = jwt.sign(
-          {
-            email: existingUser.email,
-            id: existingUser._id,
-          },
-          config.get("JWT_SECRET"),
-          { expiresIn: "1h" }
-        );
+//         const token = jwt.sign(
+//           {
+//             email: existingUser.email,
+//             id: existingUser._id,
+//           },
+//           config.get("JWT_SECRET"),
+//           { expiresIn: "1h" }
+//         );
 
-        res.status(200).json({ result: existingUser, token });
-      })
-      .catch((err) => {
-        res.status(400).json({ message: err });
-      });
-  }
-});
+//         res.status(200).json({ result: existingUser, token });
+//       })
+//       .catch((err) => {
+//         res.status(400).json({ message: err });
+//       });
+//   }
+// });
 
 module.exports = { signUpUser, signInUser, googleSignUpUser, googleSignInUser };

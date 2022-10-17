@@ -4,7 +4,7 @@ const userModel = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String }, //google doesnt require it but normal auth does but we can enforce this is the UI instead
+    password: { type: String }, //google doesnt require it but normal auth does but we can enforce this in the UI instead
     // bio: { type: String, required: true, default: "New User" },
     // pic: {
     //   type: String,

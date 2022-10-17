@@ -14,19 +14,35 @@ import {
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { useDisclosure } from "@chakra-ui/react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 import LoginContext from "../Context/LoginContext";
 
-function GoogleUsernameModal() {
+function GoogleUsernameModal({}) {
   const [username, setUsername] = useState();
-  const { enterGoogleUsername, setEnterGoogleUsername } =
-    useContext(LoginContext);
+  const {
+    enterGoogleUsername,
+    setEnterGoogleUsername,
+    newGoogleUserEmail,
+    setNewGoogleUserEmail,
+  } = useContext(LoginContext);
   const toast = useToast();
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   const closeModal = () => setEnterGoogleUsername(false);
 
-  function handleUsername({ username }) {
-    console.log(username);
-    if (username.length == 0) {
+  function cleanAndExit() {
+    //clean the login context state to what it should be normally
+    setEnterGoogleUsername(false);
+    setNewGoogleUserEmail();
+  }
+  const handleUsername = async ({ username }) => {
+    console.log(username, newGoogleUserEmail);
+    if (!username || username.length == 0) {
+      //idk the difference between a length of zero and null
+      //so i'll just check for both
       toast({
         title: "Username field empty",
         status: "error",
@@ -34,9 +50,43 @@ function GoogleUsernameModal() {
         isClosable: true,
         position: "bottom",
       });
+    } else {
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+        const data = await axios.post(
+          "/api/user/google-signup",
+          {
+            username,
+            newGoogleUserEmail,
+          },
+          config
+        );
+        console.log(data);
+        localStorage.setItem("userInfo", data);
+        setLoading(false);
+        cleanAndExit();
+        toast({
+          title: "Account created",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      } catch (error) {
+        toast({
+          title: error.response.data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
     }
-    console.log(4290);
-  }
+  };
 
   return (
     <Modal isOpen={enterGoogleUsername} onClose={closeModal}>

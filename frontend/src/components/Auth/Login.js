@@ -29,7 +29,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
   const handleShowPasswordBtn = () => setShowPassword(!showPassword);
-  const { enterGoogleUsername, setEnterGoogleUsername } =
+  const { enterGoogleUsername, setEnterGoogleUsername, setNewGoogleUserEmail } =
     useContext(LoginContext);
   console.log(useContext(LoginContext));
 
@@ -95,7 +95,9 @@ function Login() {
     }
   };
 
-  function handleGoogleSignUp() {
+  function handleGoogleSignUp(email) {
+    console.log(email);
+    setNewGoogleUserEmail(email);
     setEnterGoogleUsername(true);
   }
   const GoogleSignIn = async (googleAccessToken) => {
@@ -108,7 +110,7 @@ function Login() {
         },
       };
       const data = await axios.post(
-        "/api/user/google-signup",
+        "/api/user/google-signin",
         {
           googleAccessToken,
         },
@@ -127,7 +129,8 @@ function Login() {
       history.push("/");
     } catch (error) {
       if (error.response.status == 300) {
-        handleGoogleSignUp();
+        setLoading(false);
+        handleGoogleSignUp(error.response.data.email);
       } else {
         console.log(error);
         toast({
