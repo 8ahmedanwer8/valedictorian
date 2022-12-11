@@ -10,6 +10,7 @@ const LoginContext = createContext();
 export function LoginProvider({ children }) {
   const [enterGoogleUsername, setEnterGoogleUsername] = useState(false);
   const [newGoogleUserEmail, setNewGoogleUserEmail] = useState("");
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   return (
     <LoginContext.Provider
@@ -18,6 +19,8 @@ export function LoginProvider({ children }) {
         setEnterGoogleUsername,
         newGoogleUserEmail,
         setNewGoogleUserEmail,
+        isUserLoggedIn,
+        setIsUserLoggedIn,
       }}
     >
       {children}

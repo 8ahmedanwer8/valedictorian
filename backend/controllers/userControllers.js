@@ -59,6 +59,7 @@ const signInUser = asyncHandler(async (req, res) => {
 });
 
 const googleSignUpUser = asyncHandler(async (req, res) => {
+  // use this for creating a user with Google authentication
   const { username, newGoogleUserEmail } = req.body;
   const name = username;
   const email = newGoogleUserEmail;
@@ -66,7 +67,7 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
   try {
     const existingUser = await User.findOne({ name });
     if (existingUser) {
-      console.log("Invnaidlid username");
+      console.log("Invalid username");
       res.status(422).json({
         message: "Username already taken",
       });
@@ -95,6 +96,8 @@ const googleSignUpUser = asyncHandler(async (req, res) => {
   }
 });
 const googleSignInUser = asyncHandler(async (req, res) => {
+  // normal Google auth if the user already exists, otherwise
+  // googleSignUpUser signs up and registers the user
   const { googleAccessToken } = req.body;
   try {
     const response = await axios.get(

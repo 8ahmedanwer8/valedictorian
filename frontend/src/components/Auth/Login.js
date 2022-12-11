@@ -29,8 +29,12 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordBtn, setShowPasswordBtn] = useState("hidden");
   const handleShowPasswordBtn = () => setShowPassword(!showPassword);
-  const { enterGoogleUsername, setEnterGoogleUsername, setNewGoogleUserEmail } =
-    useContext(LoginContext);
+  const {
+    setIsUserLoggedIn,
+    enterGoogleUsername,
+    setEnterGoogleUsername,
+    setNewGoogleUserEmail,
+  } = useContext(LoginContext);
   console.log(useContext(LoginContext));
 
   const handlePassword = (e) => {
@@ -78,7 +82,8 @@ function Login() {
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", data);
+      localStorage.setItem("userInfo", JSON.stringify(data)); // need the stringify it seems like according to stack overflow
+      setIsUserLoggedIn(true);
       setLoading(false);
       history.push("/");
     } catch (error) {
@@ -124,7 +129,7 @@ function Login() {
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
       history.push("/");
     } catch (error) {

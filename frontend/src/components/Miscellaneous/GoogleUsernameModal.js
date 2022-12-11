@@ -1,3 +1,5 @@
+// Modal to let user enter unique username for when
+// they authenticate for the first time using Google
 import {
   Modal,
   ModalOverlay,
@@ -26,23 +28,25 @@ function GoogleUsernameModal({}) {
     setEnterGoogleUsername,
     newGoogleUserEmail,
     setNewGoogleUserEmail,
+    isUserLoggedIn,
+    setUserLoggedIn,
   } = useContext(LoginContext);
   const toast = useToast();
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
 
   const closeModal = () => setEnterGoogleUsername(false);
 
   function cleanAndExit() {
-    //clean the login context state to what it should be normally
+    //reset the login context state to what it should be normally
     setEnterGoogleUsername(false);
     setNewGoogleUserEmail();
+    setUserLoggedIn(true);
   }
   const handleUsername = async ({ username }) => {
     console.log(username, newGoogleUserEmail);
     if (!username || username.length == 0) {
       //idk the difference between a length of zero and null
-      //so i'll just check for both
+      //and i'm too lazy to research so i'll just check for both
       toast({
         title: "Username field empty",
         status: "error",
