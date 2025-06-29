@@ -1,2 +1,1 @@
 # valedictorian
-description coming soon
